@@ -34,6 +34,7 @@ In MotionPlannerRandom, I check some corner cases(the robotPose and goalPose are
 ```
   T(n) = max_step_number_
 ```
+And as the experiment results showed, it was easy to fail in this approach. 
 
 The memory cost is the same of world state.
 

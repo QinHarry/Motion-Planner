@@ -1,0 +1,217 @@
+#include <iostream>
+#include <vector>
+
+
+#include "motionPlanner/motionPlanner.h"
+#include "motionPlanner/motionPlannerRandom.h"
+#include "motionPlanner/motionPlannerOptimal.h"
+
+
+// General test case
+std::vector<std::vector<int>> worldState1({{0,0,1,0,0,0}, {0,0,1,0,0,0}, {0,0,0,0,1,0}, {0,0,1,1,1,0}, {0,0,0,0,1,0}, {0,0,0,0,0,0}});
+Point robotPose1(2,0);
+Point goalPose1(5, 5);
+std::vector<Point> path1;
+
+// The 3th column all are 1, cannot get goal.
+std::vector<std::vector<int>> worldState2({{0,0,1,0,0,0}, {0,0,1,0,0,0}, {0,0,1,0,1,0}, {0,0,1,1,1,0}, {0,0,1,0,1,0}, {0,0,1,0,0,0}});
+Point robotPose2(2,0);
+Point goalPose2(5, 5);
+std::vector<Point> path2;
+
+// The 5th column all are 1, cannot get goal.
+std::vector<std::vector<int>> worldState3({{0,0,1,0,0,0}, {0,0,1,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {1,1,1,1,1,1}, {0,0,1,0,0,0}});
+Point robotPose3(2,0);
+Point goalPose3(5, 5);
+std::vector<Point> path3;
+
+// The start point is 1.
+std::vector<std::vector<int>> worldState4({{0,0,1,0,0,0}, {0,0,0,0,0,0}, {1,0,0,0,1,0}, {0,0,1,1,1,0}, {0,0,1,0,1,0}, {0,0,1,0,0,0}});
+Point robotPose4(2,0);
+Point goalPose4(5, 5);
+std::vector<Point> path4;
+
+// The goal is 1.
+std::vector<std::vector<int>> worldState5({{0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,1,0}, {0,0,1,1,1,0}, {0,0,1,0,1,0}, {0,0,1,0,0,1}});
+Point robotPose5(2,0);
+Point goalPose5(5, 5);
+std::vector<Point> path5;
+
+// The goal and start point are in same point.
+std::vector<std::vector<int>> worldState6({{0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,1,0}, {0,0,0,1,1,0}, {0,0,1,0,1,0}, {0,0,1,0,0,0}});
+Point robotPose6(2,0);
+Point goalPose6(2, 0);
+std::vector<Point> path6;
+
+// The map is empty.
+std::vector<std::vector<int>> worldState7;
+Point robotPose7(2,0);
+Point goalPose7(5, 5);
+std::vector<Point> path7;
+
+
+int main(int argc, char** argv) {
+
+    MotionPlanner* motionPlanner = NULL;
+
+    if (argc < 2) {
+        std::cout<<"Please choose the approach of motion planner:"<<std::endl;
+        std::cout<<"1 - random"<<std::endl;
+        std::cout<<"2 - Optimal"<<std::endl;
+        return 0;
+    }else if (argc == 2){
+        if (strcmp(argv[1],"1") == 0) {
+            motionPlanner = new MotionPlannerRandom(20);
+        }else if (strcmp(argv[1],"2") == 0) {
+            motionPlanner = new MotionPlannerOptimal();
+        }else {
+            motionPlanner = new MotionPlannerRandom(20);
+        }
+
+
+
+        path1 = motionPlanner->search(worldState1, robotPose1, goalPose1);
+        path2 = motionPlanner->search(worldState2, robotPose2, goalPose2);
+        path3 = motionPlanner->search(worldState3, robotPose3, goalPose3);
+        path4 = motionPlanner->search(worldState4, robotPose4, goalPose4);
+        path5 = motionPlanner->search(worldState5, robotPose5, goalPose5);
+        path6 = motionPlanner->search(worldState6, robotPose6, goalPose6);
+        path7 = motionPlanner->search(worldState7, robotPose7, goalPose7);
+
+        for (unsigned int i = 0; i < path1.size(); ++i) {
+            worldState1[path1[i].x][path1[i].y] = i;
+        }
+        std::cout<<"path1"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState1[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (unsigned int i = 0; i < path2.size(); ++i) {
+            worldState1[path2[i].x][path2[i].y] = i;
+        }
+        std::cout<<"path2"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState2[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (unsigned int i = 0; i < path3.size(); ++i) {
+            worldState1[path3[i].x][path3[i].y] = i;
+        }
+        std::cout<<"path3"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState3[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (unsigned int i = 0; i < path4.size(); ++i) {
+            worldState1[path4[i].x][path4[i].y] = i;
+        }
+        std::cout<<"path4"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState4[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (unsigned int i = 0; i < path5.size(); ++i) {
+            worldState1[path5[i].x][path5[i].y] = i;
+        }
+        std::cout<<"path5"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {std::cout<<"\n";
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState5[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (unsigned int i = 0; i < path6.size(); ++i) {
+            worldState1[path6[i].x][path6[i].y] = i;
+        }
+        std::cout<<"path6"<<std::endl;
+        for (unsigned int i = 0; i < 6; ++i) {
+            for (unsigned int j = 0; j < 6; ++j) {
+                std::cout<<worldState6[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+
+
+
+    }else if (argc == 4) {
+        srand (time(NULL));
+        int worldSize = std::stoi(std::string(argv[2]));
+        int maxStepNumber = std::stoi(std::string(argv[3]));
+
+        // Generate world state
+        std::vector<std::vector<int>> worldState(worldSize, std::vector<int>(worldSize, 0));
+        for (int i = 0; i < worldSize; ++i) {
+            int x = rand() % worldSize;
+            int y = rand() % worldSize;
+            worldState[x][y] = 1;
+        }
+
+        // Generate robotPose
+        int x = rand() % worldSize;
+        int y = rand() % worldSize;
+        while (worldState[x][y] == 1) {
+            x = rand() % worldSize;
+            y = rand() % worldSize;
+        }
+        Point robotPose(x, y);
+
+        // Generate goalPose
+        x = rand() % worldSize;
+        y = rand() % worldSize;
+        while (worldState[x][y] == 1 || (x == robotPose.x && y == robotPose.y)) {
+            x = rand() % worldSize;
+            y = rand() % worldSize;
+        }
+        Point goalPose(x, y);
+
+        if (strcmp(argv[1],"1") == 0) {
+            motionPlanner = new MotionPlannerRandom(maxStepNumber);
+        }else if (strcmp(argv[1],"2") == 0) {
+            motionPlanner = new MotionPlannerOptimal();
+        }else {
+            motionPlanner = new MotionPlannerRandom(maxStepNumber);
+        }
+
+        std::vector<Point> path = motionPlanner->search(worldState, robotPose, goalPose);
+
+        for (unsigned int i = 0; i < path.size(); ++i) {
+            worldState[path[i].x][path[i].y] = i;
+        }
+        std::cout<<"path"<<std::endl;
+        for (unsigned int i = 0; i < worldSize; ++i) {
+            for (unsigned int j = 0; j < worldSize; ++j) {
+                std::cout<<worldState[i][j]<<"\t";
+            }
+            std::cout<<"\n";
+        }
+        std::cout<<"\n";
+
+        for (auto p : path) {
+            std::cout<<"("<<p.x<<" , "<<p.y<<")"<<"\t";
+        }
+        std::cout<<"\n";
+    }else {
+        return 0;
+    }
+
+}
